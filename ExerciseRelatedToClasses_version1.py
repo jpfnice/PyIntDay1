@@ -25,13 +25,12 @@ any other method you consider interesting to provide: for instance a method to c
 
 """
 class Record:
-    def __init__(self, name, time, date, temperature):
+    
+    def __init__(self, name, time, date, temp):
         self.city=name 
         self.time=time
         self.date=date
-        if not isinstance(temperature, float):
-            raise Exception("Wrong kind of temperature")
-        self.__temperature=temperature
+        self.temperature=temp
     
     def __str__(self): # __str__() makes use of __repr__()
         return self.__repr__()
@@ -133,8 +132,7 @@ if __name__ == "__main__":
     print(lofr)
     
     # for r in lofr:
-    #     print(r)
-        
+    #     print(r)        
    
     city="Geneva"
     result=lofr.averageTemp(city)
