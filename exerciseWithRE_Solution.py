@@ -30,6 +30,7 @@
 import re
 import datetime as dt 
 
+
 # Definition of 3 new categories of Exceptions (this is simply an option you
 # can limit yourself to the use of predefined exceptions: Exception, ValueError, ...):
     
@@ -67,7 +68,9 @@ def isFloat(inputText):
         
 def parseDate(inputText):
     """
-    documentation string or docstring
+    The function parseDate convert a date reprsented as a string argument
+    into a date object
+    
     Parameters
     ----------
     inputText : a string representing a date
@@ -81,6 +84,7 @@ def parseDate(inputText):
     A date object (constructed with the help of the argument received)
 
     """
+    
     reg=re.compile(r"""^            # beginning of the string
                        ([0-3]\d)    # the day
                        /
@@ -109,7 +113,11 @@ def parseTime(inputText):
     mo=reg.search(inputText)
     if mo:
         #print(mo.groups())
-        hh,mm,__,sec=mo.groups() # unpacking
+        
+        # a variable which name is composed of a single underscore is 
+        # considered by Python as a "throwaway" variable:
+            
+        hh,mm,_,sec=mo.groups() # unpacking
         if sec==None: 
             sec=0
         return dt.time(int(hh), int(mm), int(sec))
@@ -137,7 +145,8 @@ def parseFloat(inputText):
         return float(mo[0]) # <=> return float(mo.group(0))
     else:
         raise ParseFloatError("Bad float format: %s" % (inputText))
-    
+        #raise ParseFloatError(f"Bad float format: {inputText}")
+        
 if __name__ == "__main__":
     
     dateStr=("22/12/1903", "15/08/16", "45/08/16","15/08/016", "5/08/16")
@@ -154,7 +163,7 @@ if __name__ == "__main__":
             nt=parseTime(t)
             print(f"Parsing of {t} OK -> {nt}")
         except:
-            print(f"{t}: bad format!!!", t)
+            print(f"{t}: bad format!!!")
                 
     floatStr=("1244.456", "-3.56", "0.003","12", "003.4", "12;34")
     for f in floatStr:
