@@ -43,13 +43,16 @@ class ParseTimeError(Exception):
 class ParseFloatError(Exception):
     pass 
 
+# isDate() isTime() and isFloat() are simply there as examples of how
+# you could implement functions to test a string is a valid date,time or float
+
 def isDate(inputText):
     reg=re.compile(r"""^          # beginning of the string
-                       ([0-3]\d)  # the day
-                       /
-                       ([01]\d)   # the month
-                       /
-                       (\d\d|\d{4}) # the year
+                       ([0-3]\d)  # the day: 2 digits the first in 0,1,2 or 3
+                       /          # a / separate day from month
+                       ([01]\d)   # the month: 2 digits the first in 0 or 1
+                       /          # a / separate day from month
+                       (\d\d|\d{4}) # the year: 2 or 4 digits
                        $            # end of the string
                        """, re.VERBOSE)
     
@@ -68,8 +71,8 @@ def isFloat(inputText):
         
 def parseDate(inputText):
     """
-    The function parseDate convert a date reprsented as a string argument
-    into a date object
+    The function parseDate converts a date represented as a string argument
+    into a datetime.date object
     
     Parameters
     ----------
@@ -81,7 +84,7 @@ def parseDate(inputText):
 
     Returns
     -------
-    A date object (constructed with the help of the argument received)
+    A datetime.date object (constructed with the help of the argument received)
 
     """
     
@@ -108,7 +111,23 @@ def parseDate(inputText):
         raise ParseDateError(f"Wrong date value: {inputText} !") # >= 3.6
     
 def parseTime(inputText):
+    """
+    The function parseTime converts a time represented as a string argument
+    into a datetime.time object
     
+    Parameters
+    ----------
+    inputText : a string representing a time
+
+    Raises
+    ------
+    ParseTimeError if the argument received is not a valid time
+
+    Returns
+    -------
+    A datetime.time object (constructed with the help of the argument received)
+
+    """
     reg=re.compile(r"^([0-2]\d)[H:]([0-5]\d)([M:]([0-5]\d))?$", re.IGNORECASE)
     mo=reg.search(inputText)
     if mo:
@@ -122,7 +141,7 @@ def parseTime(inputText):
             sec=0
         return dt.time(int(hh), int(mm), int(sec))
     else:
-        raise ParseTimeError("Bad time format: {}".format(inputText)) # > 3.0
+        raise ParseTimeError("Bad time format: {}".format(inputText)) 
 
 # def parseTime(inputText):
 #     # (?: ... ) define a "non capturing group"
@@ -138,14 +157,32 @@ def parseTime(inputText):
 #         raise ParseTimeError("Bad time format: {}".format(inputText)) # > 3.0
         
 def parseFloat(inputText):
-    # 003.5 0.5 01.5 8.6 1000.56 100.
+    """
+    The function parseFloat converts a float represented as a string argument
+    into a real float object
+    
+    Parameters
+    ----------
+    inputText : a string representing a float
+    For instance: '3.5' '0.5' '-1.5' '+8.6' '1000.56' '100.' ....
+
+    Raises
+    ------
+    ParseFloatError if the argument received is not a valid float
+
+    Returns
+    -------
+    A float object (constructed with the help of the argument received)
+
+    """
+    
     reg=re.compile(r"^[+-]?(\d|[1-9]\d+)\.\d*$") 
     mo=reg.search(inputText)
     if mo:
         return float(mo[0]) # <=> return float(mo.group(0))
     else:
-        raise ParseFloatError("Bad float format: %s" % (inputText))
-        #raise ParseFloatError(f"Bad float format: {inputText}")
+        #raise ParseFloatError("Bad float format: %s" % (inputText)) # Old deprecated syntax
+        raise ParseFloatError(f"Bad float format: {inputText}")
         
 if __name__ == "__main__":
     
