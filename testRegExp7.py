@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 VERBOSE Flag
 """
@@ -14,6 +14,7 @@ regexp=re.compile(r"""
                         $         # The end of the text
                         """, re.VERBOSE|re.IGNORECASE)
  # <=> "^([abc])(.+)([abc])$"
+ 
 print(type(regexp))  
 
 matchobj=regexp.search(text)
