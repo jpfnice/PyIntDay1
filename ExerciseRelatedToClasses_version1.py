@@ -17,13 +17,14 @@ This class "ListOfRecord" should offer:
 
 a way to construct an instance of it with the help of a text file like the one above.
 
-a ways to save/restore the list easily (will be covered later)
+a ways to save/restore the list easily (using pickle)
 
 a method to compute the average of the temperature recorded for a given city name.
 
 any other method you consider interesting to provide: for instance a method to compute the minimum and maximum of the temperatures recorded for a given city name.
 
 """
+import pickle
 class Record:
     
     def __init__(self, name, time, date, temp):
@@ -63,9 +64,16 @@ class ListOfRecord:
         
     def __init__(self):
         self.data=[] 
-        
+       
     def __repr__(self):
         return str(self.data)
+    
+    # __str__() is invoked when you print an object with the print function. 
+    # In case __str__() is missing, then print and any function using str() 
+    # invokes __repr__() of object. 
+    
+    # __str__() of containers, when invoked, will execute __repr__() 
+    # method of its contained elements.
     
     def __str__(self): # __str__() makes use of __repr__()
         return self.__repr__()  
@@ -73,17 +81,26 @@ class ListOfRecord:
     def addRecord(self, record):
         self.data.append(record)
         
-    @staticmethod
-    def parseFile(fname):
+    @classmethod
+    def parseFile(self, fname):
         lr=ListOfRecord()
         with open(fname,"r") as fic:
             fic.readline()
             for line in fic:
                 lr.addRecord(Record.parse(line))
         return lr  
-          
-    #parseFile=staticmethod(parseFile) 
-       
+         
+   
+    @classmethod
+    def load(self, fname):
+        with open(fname, "rb") as f:
+            return pickle.load(f)
+            
+     
+    def save(self, fname):
+        with open(fname, "wb") as f:
+            pickle.dump(self, f)
+            
     def __contains__(self, city): # associated with the "in" operator
         for r in self.data:
             if r.city == city:
@@ -127,31 +144,23 @@ class ListOfRecord:
         return (mini, maxi)  
         
 if __name__ == "__main__":
-      
-    lofr=ListOfRecord.parseFile("measures.txt")
-    print(lofr)
+ 
     
-    # for r in lofr:
-    #     print(r)        
-   
+    lofr=ListOfRecord.parseFile("measures.txt")
+
+    print(lofr)        
+    
+    lofr.save("lor.pick")
+    
+    lofrBis=ListOfRecord.load("lor.pick")
+    print(lofrBis) 
+    
     city="Geneva"
     result=lofr.averageTemp(city)
     print(result)
-    city="Lausanne"
-    result=lofr.averageTemp(city)
-    print(result)
-    city="Bern"
-    result=lofr.averageTemp(city)
-    print(result)
+  
     result=lofr.minMax(city)
     print("Mini, maxi:", result)
-    result=lofr.minMaxAll()
-    print("Mini, maxi all:", result)
-    city="Neuchatel"
-    if city in lofr:
-        result=lofr.averageTemp(city)
-        print("Average:", result)
-    else:
-        print(f"{city} is not in the list of record")
+   
     
 
