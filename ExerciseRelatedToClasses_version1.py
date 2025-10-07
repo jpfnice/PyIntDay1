@@ -32,13 +32,13 @@ class Record:
         self.city=name 
         self.time=time
         self.date=date
-        self.temperature=temp
+        self.__temperature=temp
     
     def __str__(self): # __str__() makes use of __repr__()
         return self.__repr__()
     
     def __repr__(self):
-        return f"{self.city} at {self.date} {self.time}: {self.temperature}"
+        return f"{self.city} at {self.date} {self.time}: {self.__temperature}"
     
     # Note: classmethod is equivalent to staticmethod the only difference is that a
     # classmethod get an implicit argument: the class the method belongs to
