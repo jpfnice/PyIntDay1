@@ -25,6 +25,7 @@ any other method you consider interesting to provide: for instance a method to c
 
 """
 import pickle
+
 class Record:
     
     def __init__(self, name, time, date, temp):
