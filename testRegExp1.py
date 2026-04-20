@@ -1,7 +1,5 @@
 import re
 
-
-
 """
 {min,max}: between min and max occurences of the preceding character
 {n,}: n or more occurences of the preceding character
@@ -30,61 +28,171 @@ Note:
 
 (word1|word2|...): either "word1" or "word2" or ...
 """
-#regexp=re.compile(r"\d\d\d") # a raw string
-#regexp=re.compile(r"\d{3,5}") # a raw string
-#regexp=re.compile(r"^\d{3,5}$") # a raw string
-#regexp=re.compile(r"^\d{3,5}") # a raw string
-#regexp=re.compile(r"^\d{3,5}$") # a raw string
-#regexp=re.compile(r"^\d{3,5}\s+\d{3,5}$") # a raw string
-#regexp=re.compile(r"^[2468]+\s+\d{3,5}$") # a raw string
-#regexp=re.compile(r"^[a-z]+\s+\d{3,5}$") # a raw string
-#regexp=re.compile(r"^[a-zA-Z]+\s+\d{3,5}$") # a raw string
-#regexp=re.compile(r"^[^a-zA-Z]+\s+\d{3,5}$") # a raw string
 
-# text="nUmBer is 200" 
-# regexp=re.compile(r"^number", re.IGNORECASE) # a "raw" string
+# Test 1:
+    
+# text="This is a remark"
 
-# text="nUmBer is 3457" 
-# regexp=re.compile(r"\d\d\d") # 3 digits
+# regexp=re.compile("rem")
 
-#text="nUmBer is 37" 
-#regexp=re.compile(r"\d{3}") # 3 digits
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")
 
-# text="nUmBer is 3788" 
-# regexp=re.compile(r"\d{3,6}") # between 3 and 6 digits
+# Test 2:
+    
+# text="remark number 1"
 
-# text="nUmBer is 37" 
-# regexp=re.compile(r"\d{3,}") # 3 or more digits
+# regexp=re.compile("^rem")
 
-# text="nUmBer is 356" 
-# regexp=re.compile(r"\d+") # + <=> {1,} 1 or more digits
-#                           # * <=> {0,} 0 or more digits
-#                           # ? <=> {0,1} 0 or 1 digits
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")
 
-# text="nUmBer is -356" 
-# regexp=re.compile(r"[+-]\d+") # + or - followed by 1 or more digits
+# Test 3:
+    
+# text="Bla bla rem"
 
-# text="nUmBer is 356" 
-# regexp=re.compile(r"[+-]?\d+") # an optional + or - followed by 1 or more digits
+# regexp=re.compile("rem$")
 
-# text="nUmBer is -356" 
-# regexp=re.compile(r"123") # the sequence of digits 123
-# regexp=re.compile(r"[123]") # the digit 1 or the digit 2 or the digit 3
-# regexp=re.compile(r"[1-3]") # the digit 1 or the digit 2 or the digit 3
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")
 
-# text=": Some textual information" 
-# regexp=re.compile(r"^[234TRYghu,:]") 
+# Test 4:
+    
+# text="rem"
 
-# text=";nUmBer is -356" 
-# regexp=re.compile(r"^[^A-Za-z]") # any character except an alphabetic character at the begining of the string
+# regexp=re.compile("^rem$")
 
-text=";;;" 
-regexp=re.compile(r"^...$") # the string is composed of 3 characters
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")
+
+# Test 5:
+# \d -> a digit 
+
+# text="The value is 678"
+
+# regexp=re.compile(r"\d$")
+
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")
+    
+# Test 5:
+# [2468] -> 2 or 4 or 6 or 8
+# \d <=> [0123456789] <=> [0-9]
+
+# text="The value is 677"
+
+# regexp=re.compile(r"[2468]$")
+
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+    # print("The string does not match !")    
+
+# Test 6:
+# [aAbB] -> a or A or b or B
+# \w <=> [a-zA-Z0-9]
+
+# text="An example"
+
+# regexp=re.compile(r"^[aAbB]")
+
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !") 
+
+# Test 7:
+# [^0-9] -> any character except a digit
+# [^0-9] <=> \D
+
+# text="An example"
+
+# regexp=re.compile(r"^\D")
+
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")
+    
+# Test 8:
+# + -> 1 or more occurence
+# * -> 0 or more occurence
+# ? -> 0 or 1 occurence
+
+# text="word1     word2"
+
+# regexp=re.compile(r"^\w+\s+\w+$")
+
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")
+    
+# Test 9:
+# + -> 1 or more occurence
+# * -> 0 or more occurence
+# ? -> 0 or 1 occurence
+
+# text="+56"
+
+# regexp=re.compile(r"^[+-]?\d+$")
+
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")    
+    
+# Test 10:
+# {1,3} -> 1, 2 or 3 occurences
+# {5,} -> 5 occurences or more
+# {3} -> 3 occurences
+# * <=> {0,}, ? <=> {0,1}, + <=> {1,}
+
+# text="+56"
+
+# regexp=re.compile(r"^[+-]?\d+$")
+
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")       
+    
+
+# Test 10:
+# . -> a character (except \n)
+
+# text="+56"
+
+# regexp=re.compile(r"^...$") # 3 characters
+
+# if regexp.search(text):
+#     print("The string match !")
+# else:
+#     print("The string does not match !")  
+    
+# Test 11:
+# (value1|value2|value3 ...)
+
+text="data.png"
+
+regexp=re.compile(r"\.(gif|jpeg|png)$") # 3 possible suffixes: .gif, .jpeg or;png
 
 if regexp.search(text):
-    print("The string text 'match'")
+    print("The string match !")
 else:
-    print("The string text does not 'match'")
+    print("The string does not match !")
+    
+
     
     
     
