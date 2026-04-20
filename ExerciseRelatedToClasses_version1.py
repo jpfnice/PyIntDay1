@@ -24,6 +24,7 @@ a method to compute the average of the temperature recorded for a given city nam
 any other method you consider interesting to provide: for instance a method to compute the minimum and maximum of the temperatures recorded for a given city name.
 
 """
+
 import pickle
 
 class Record:
@@ -32,13 +33,17 @@ class Record:
         self.city=name 
         self.time=time
         self.date=date
-        self.__temperature=temp
+        self.temperature=temp
+        
+    # __str__() and __repr__() are 2 functions that both transform an object into a str.
+    # Most of the time __repr__() is used by Python but they are a few situations
+    # where __str__() is invoked. Quite often the 2 methods return the same result.
     
     def __str__(self): # __str__() makes use of __repr__()
         return self.__repr__()
     
     def __repr__(self):
-        return f"{self.city} at {self.date} {self.time}: {self.__temperature}"
+        return f"{self.city} at {self.date} {self.time}: {self.temperature}"
     
     # Note: classmethod is equivalent to staticmethod the only difference is that a
     # classmethod get an implicit argument: the class the method belongs to
@@ -73,7 +78,7 @@ class ListOfRecord:
     # In case __str__() is missing, then print and any function using str() 
     # invokes __repr__() of object. 
     
-    # __str__() of containers, when invoked, will execute __repr__() 
+    # __str__() of containers, when invoked, will execute the __repr__() 
     # method of its contained elements.
     
     def __str__(self): # __str__() makes use of __repr__()
@@ -83,7 +88,7 @@ class ListOfRecord:
         self.data.append(record)
         
     @classmethod
-    def parseFile(self, fname):
+    def parseFile(cls, fname):
         lr=ListOfRecord()
         with open(fname,"r") as fic:
             fic.readline()
@@ -91,13 +96,16 @@ class ListOfRecord:
                 lr.addRecord(Record.parse(line))
         return lr  
          
-   
-    @classmethod
-    def load(self, fname):
+    # @classmethod
+    # def load(cls, fname):
+    #     with open(fname, "rb") as f:
+    #         return pickle.load(f)
+    
+    @staticmethod
+    def load(fname):
         with open(fname, "rb") as f:
-            return pickle.load(f)
-            
-     
+            return pickle.load(f)   
+        
     def save(self, fname):
         with open(fname, "wb") as f:
             pickle.dump(self, f)
@@ -146,7 +154,6 @@ class ListOfRecord:
         
 if __name__ == "__main__":
  
-    
     lofr=ListOfRecord.parseFile("measures.txt")
 
     print(lofr)        
@@ -162,6 +169,8 @@ if __name__ == "__main__":
   
     result=lofr.minMax(city)
     print("Mini, maxi:", result)
-   
+    
+    # for e in lofr:
+    #     print(e)
     
 
