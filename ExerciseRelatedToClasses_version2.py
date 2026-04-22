@@ -1,5 +1,10 @@
 
 """
+Version 2:
+    In this version, ListOfRecord is iterable: it makes use
+    of the iterator of the list (represented by the attribute data) via the         special methods __iter__()
+
+
 Given a file (you can use "measures.txt", see the github repo) with the following format:
     
     City name;time;date;temperature
@@ -36,7 +41,7 @@ class Record:
         return self.__repr__()
     
     def __repr__(self):
-        return f"{self.city} at {self.date} {self.time}: {self.temperature}"
+        return f"{self.city} at {self.date} {self.time}: {self.__temperature}"
     
     # Note: classmethod is equivalent to staticmethod the only difference is that a
     # classmethod get an implicit argument: the class the method belongs to
@@ -58,9 +63,14 @@ class Record:
     temperature=property(fget=temperatureGet, fset=temperatureSet) 
     
     # NOTE: city, time and date could (and should) also be defined as properties ...       
-           
+
+# This version of ListOfRecord, compared to version 1, instead of a Class method, 
+# makes use of a constructor to construct the list with the help of a file
+
+# This version of ListOfRecord, compared to version 1, provide an iterator 
+# (the iterator used is the iterator of the list class)
 class ListOfRecord:
-        
+    
     def __init__(self, fname=None):
         if fname==None:
             self.data=[] 

@@ -1,5 +1,9 @@
 
 """
+Version 1:
+    In this version, ListOfRecord is NOT iterable
+    
+    
 Given a file (you can use "measures.txt", see the github repo) with the following format:
     
     City name;time;date;temperature
@@ -170,7 +174,7 @@ if __name__ == "__main__":
     result=lofr.minMax(city)
     print("Mini, maxi:", result)
     
-    # for e in lofr:
-    #     print(e)
+    for e in lofr:
+        print(e)
     
 

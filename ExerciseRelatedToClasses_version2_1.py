@@ -1,5 +1,10 @@
 
 """
+Version 2.1:
+    In this version, ListOfRecord is iterable: it makes use
+    of it's own iterator (special methods __iter__() + __next__())
+    
+    
 Given a file (you can use "measures.txt", see the github repo) with the following format:
     
     City name;time;date;temperature
@@ -57,11 +62,16 @@ class Record:
     
     temperature=property(fget=temperatureGet, fset=temperatureSet) 
     
-    # NOTE: city, time and date could (and should) also be defined as properties ...       
-           
+    # NOTE: city, time and date could (and should) also be defined as properties ...   
+    
+# This version of ListOfRecord, compared to version 1, instead of a Class method, makes use of a 
+# constructor to construct the list with the help of a file
+# This version of ListOfRecord, compared to version 2, define it's own iterator 
+      
 class ListOfRecord:
         
     def __init__(self, fname=None):
+        
         if fname==None:
             self.data=[] 
         else:
@@ -154,26 +164,10 @@ if __name__ == "__main__":
     print(lofr)
     
     for r in lofr:
-        print(r)        
-
-    city="Geneva"
-    result=lofr.averageTemp(city)
-    print(result)
-    city="Lausanne"
-    result=lofr.averageTemp(city)
-    print(result)
-    city="Bern"
-    result=lofr.averageTemp(city)
-    print(result)
-    result=lofr.minMax(city)
-    print("Mini, maxi:", result)
-    result=lofr.minMaxAll()
-    print("Mini, maxi all:", result)
-    city="Neuchatel"
-    if city in lofr:
-        result=lofr.averageTemp(city)
-        print("Average:", result)
-    else:
-        print(f"{city} is not in the list of record")
+        print(r)       
+    print("Second loop")
+    for r in lofr:
+        print(r)   
+    
     
 
